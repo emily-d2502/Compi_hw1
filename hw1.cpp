@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "tokens.hpp"
 
 #define TOKEN_CASE(token)           \
@@ -40,7 +41,7 @@ int main() {
             TOKEN_CASE(ID)
             TOKEN_CASE(NUM)
             case STRING:
-                check_string(yytext);
+                // check_string(yytext);
                 print_string(yytext);
                 break;
         }
@@ -62,6 +63,47 @@ void check_string(const char* str) {
     }
 }
 
-void print_string(const char* str) {
-    // Todo
+bool is_hex(char n) {
+    return ('0' <= n && n <= '9') || ('A' < n && n <= 'F') || ('a' < n && n <= 'f');
+}
+
+void print_string(const char* input) {
+    std::string ret;
+    for (int i = 1; i < strlen(input) - 1; ++i) {
+        if (input[i] != '\\') {
+            ret.push_back(input[i]);
+            continue;
+        }
+        switch (input[++i])
+        {
+            case 'n':
+                ret.push_back('\n');
+                break;
+
+            case 'r':
+                ret.push_back('\r');
+                break;
+
+            case 't':
+                ret.push_back('\t');
+                break;
+
+            case '\\':
+                ret.push_back('\\');
+                break;
+
+            case '\"':
+                ret.push_back('\"');
+                break;
+
+            case 'x':
+                std::string hex;
+                do {
+                    hex.push_back(input[++i]);
+                } while (is_hex(input[i + 1]));
+                ret.push_back(std::stoi(hex, nullptr, 16));
+                break;
+        }
+    }
+    std::cout << ret;
 }

@@ -39,12 +39,12 @@ continue                        return CONTINUE;
 =                               return ASSIGN;
 (==|!=|<|>|<=|>=)               return RELOP;
 (\+|-|\/|\*)                    return BINOP;
-(\/\/[^\n\r]*)                  return COMMENT;
+(\/\/[^\n\r(\r\n)]*)            return COMMENT;
 
 {digit}+	                    return NUM;
 {letter}({letter}|{digit})*	    return ID;
 {whitespace}				    ;
-\"(.|\n)*\"                     return STRING;
+\"([^\"]|\\\")*\"                      return STRING;
 .		                        printf("Lex doesn't know what that is!\n");
 
 %%

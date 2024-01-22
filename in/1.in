@@ -1,0 +1,4 @@
+byte x = 15b;
+int x = "hello world!\n"
+
+

@@ -31,18 +31,24 @@ enum tokentype {
     COMMENT = 25,
     ID = 26,
     NUM = 27,
-    STRING = 28
+    STRING = 28,
+    ERROR = 29
 };
 
 // lex.yy.c predefined variables
 extern int yylineno;
 extern char* yytext;
-extern size_t yyleng;
+extern int yyleng;
 extern int yylex();
 
 // Helper functions declarations
 void show_token(const char* name);
 void check_string(const char* str);
 void print_string(const char* str);
+void main_error(const char* str);
+void undefined_escape_sequence_error(const char* str);
+bool is_hex(const char n);
+void unclosed_string_error(const char* str);
+bool isCharLegal(const char c);
 
 #endif /* TOKENS_HPP_ */

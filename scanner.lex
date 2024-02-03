@@ -11,6 +11,7 @@
 
 whitespace		([\r\t\n ])
 digit   		([0-9])
+non_zero_dig    ([1-9])
 letter  		([a-zA-Z])
 
 %%
@@ -39,13 +40,12 @@ continue                        return CONTINUE;
 =                               return ASSIGN;
 (==|!=|<|>|<=|>=)               return RELOP;
 (\+|-|\/|\*)                    return BINOP;
-(\/\/[^\n\r(\r\n)]*)            return COMMENT;
-
-{digit}+	                    return NUM;
+(\/\/[^\n\r]*)                  return COMMENT;
+{non_zero_dig}{digit}*|(0)	    return NUM;
 {letter}({letter}|{digit})*	    return ID;
 {whitespace}				    ;
-\"([^\"]|\\\")*\"                      return STRING;
-.		                        printf("Lex doesn't know what that is!\n");
+(\"([^\"\\]|(\\\")|(\\[^\"]))*\")  return STRING;
+.		                        return ERROR;
 
 %%
 
